@@ -1,0 +1,45 @@
+# Python cache
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Django specific
+db.sqlite3
+media/
+staticfiles/
+.env
+*.log
+
+# Virtual environments
+venv/
+.env/
+.venv/
+
+# Node modules
+node_modules/
+
+# Build outputs
+dist/
+build/
+
+# Cache
+.npm/
+.yarn/
+.pnp.*
+.pnp.js
+.cache/
+
+# Supabase secrets
+supabase/.temp/
+supabase/.branches/
+supabase/.env
+supabase/config.toml
+
+# Mac / Windows / Linux system files
+.DS_Store
+Thumbs.db
+
+# VSCode
+.vscode/
+.idea/
+*.swp
