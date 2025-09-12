@@ -1,12 +1,22 @@
-import { useState } from 'react'
-import './App.css'
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Login from "./pages/Login";
+import Dashboard from "./pages/Dashboard";
+import ProtectedRoute from "./components/ProtectedRoute";
 
-function App() {
-  const [count, setCount] = useState(0)
-
+export default function App() {
   return (
-    <h1 className='text-center bg-gray-500 p-10'>Hey Money Coming!</h1>
-  )
+    <Router>
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route
+          path="/dashboard/*"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+      </Routes>
+    </Router>
+  );
 }
-
-export default App
