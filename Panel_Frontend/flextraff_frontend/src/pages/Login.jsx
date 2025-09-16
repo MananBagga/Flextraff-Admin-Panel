@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import logo from "../assets/flextraff_logo.png";
 
@@ -7,6 +7,11 @@ export default function Login() {
   const [pass, setPass] = useState("");
   const [error, setError] = useState(""); // error state
   const navigate = useNavigate();
+
+  // useEffect(() => {
+  //   setUser("");
+  //   setPass("");
+  // }, []);
 
   const handleLogin = (e) => {
     e.preventDefault();
