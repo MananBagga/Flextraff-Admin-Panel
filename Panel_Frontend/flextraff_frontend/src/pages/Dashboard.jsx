@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from "recharts";
 import { LogOut, BarChart3, Table, Settings } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+
 
 export default function Dashboard() {
   const [trafficData, setTrafficData] = useState([
@@ -18,6 +21,14 @@ export default function Dashboard() {
 
   const COLORS = ["#22c55e", "#facc15", "#ef4444"];
 
+  const navigate = useNavigate();
+
+const handleLogout = () => {
+  localStorage.removeItem("auth");
+  navigate("/");
+};
+
+
   return (
     <div className="h-screen flex bg-gray-950 text-white">
       {/* Sidebar */}
@@ -31,14 +42,18 @@ export default function Dashboard() {
             <a href="#" className="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-800">
               <Table size={18} /> <span>Traffic Data</span>
             </a>
-            <a href="#" className="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-800">
+            <a href="/control" className="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-800">
               <Settings size={18} /> <span>Controls</span>
             </a>
           </nav>
         </div>
-        <button className="flex items-center gap-2 text-gray-400 hover:text-red-500 transition">
-          <LogOut size={18} /> Logout
+        <button
+          className="flex items-center gap-2 text-gray-400 hover:text-red-500 transition"
+          onClick={handleLogout}
+        >
+        <LogOut size={18} /> Logout
         </button>
+
       </aside>
 
       {/* Main Content */}
