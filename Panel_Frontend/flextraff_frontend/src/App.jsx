@@ -2,9 +2,13 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
-import Controls from "./pages/controls";
+import Controls from "./pages/controls";// Updated to capital C
+import { ThemeProvider, ThemeContext } from "./components/themecontext";
+import { useContext } from "react";
 
-export default function App() {
+function AppRoutes() {
+  const { darkMode, toggleDarkMode } = useContext(ThemeContext);
+
   return (
     <Router>
       <Routes>
@@ -13,19 +17,27 @@ export default function App() {
           path="/dashboard/*"
           element={
             <ProtectedRoute>
-              <Dashboard />
+              <Dashboard darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
             </ProtectedRoute>
           }
         />
         <Route
-    path="/control"
-    element={
-      <ProtectedRoute>
-        <Controls />
-      </ProtectedRoute>
-    }
-  />
+          path="/controls"
+          element={
+            <ProtectedRoute>
+              <Controls darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
     </Router>
+  );
+}
+
+export default function App() {
+  return (
+    <ThemeProvider>
+      <AppRoutes />
+    </ThemeProvider>
   );
 }

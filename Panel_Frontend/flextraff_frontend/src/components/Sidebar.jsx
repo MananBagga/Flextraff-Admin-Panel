@@ -1,7 +1,7 @@
-import { BarChart3, Table, Settings, LogOut } from "lucide-react";
+import { BarChart3, Table, Settings, LogOut, Moon } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 
-export default function Sidebar() {
+export default function Sidebar({ darkMode, toggleDarkMode }) {
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -10,18 +10,57 @@ export default function Sidebar() {
   };
 
   return (
-    <aside className="w-64 bg-gray-900 border-r border-gray-800 p-6 flex flex-col justify-between min-h-screen">
+    <aside
+      className={`w-64 ${
+        darkMode ? "bg-gray-900 border-gray-800" : "bg-gray-100 border-gray-300"
+      } p-6 flex flex-col justify-between min-h-screen`}
+    >
       <div>
-        <h1 className="text-2xl font-bold text-yellow-400 mb-10">🚦 FlexTraff</h1>
+        <div className="flex items-center justify-between mb-10">
+          <button
+            aria-label="Toggle dark mode"
+            className={`rounded-full p-1 ${darkMode ? "bg-gray-900" : "bg-white"}`}
+            onClick={toggleDarkMode}
+          >
+            <Moon
+              size={28}
+              color={darkMode ? "#facc15" : "#888"}
+              fill={darkMode ? "#facc15" : "none"}
+            />
+          </button>
+          <h1 className={`text-2xl font-bold ${darkMode ? "text-yellow-400" : "text-blue-600"}`}>
+            🚦 FlexTraff
+          </h1>
+        </div>
         <nav className="space-y-4">
-          <Link to="/dashboard" className="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-800">
-            <BarChart3 size={18} /> <span>Analytics</span>
+          <Link
+            to="/dashboard"
+            className={`flex items-center gap-2 p-2 rounded-lg transition-colors duration-150 ${
+              darkMode ? "hover:bg-gray-800 hover:text-yellow-400" : "hover:bg-blue-50 hover:text-blue-700"
+            }`}
+          >
+            <BarChart3 size={18} className={darkMode ? "text-yellow-400" : "text-blue-500"} />{" "}
+            <span>Analytics</span>
           </Link>
-          <Link to="/dashboard" className="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-800">
-            <Table size={18} /> <span>Traffic Data</span>
+          <Link
+            to="/dashboard"
+            className={`flex items-center gap-2 p-2 rounded-lg transition-colors duration-150 ${
+              darkMode ? "hover:bg-gray-800 hover:text-yellow-400" : "hover:bg-blue-50 hover:text-blue-700"
+            }`}
+          >
+            <Table size={18} className={darkMode ? "text-yellow-400" : "text-blue-500"} />{" "}
+            <span>Traffic Data</span>
           </Link>
-          <Link to="/control" className="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-800">
-            <Settings size={18} /> <span>Controls</span>
+
+          {/* Changed route path from /control to /controls */}
+          <Link
+            to="/controls"
+            className={`flex items-center gap-2 p-2 rounded-lg transition-colors duration-150 ${
+              darkMode ? "hover:bg-gray-800 hover:text-yellow-400" : "hover:bg-blue-50 hover:text-blue-700"
+            }`}
+          >
+            <Settings size={18} className={darkMode ? "text-yellow-400" : "text-blue-500"} />{" "}
+            <span>Controls</span>
           </Link>
         </nav>
       </div>
