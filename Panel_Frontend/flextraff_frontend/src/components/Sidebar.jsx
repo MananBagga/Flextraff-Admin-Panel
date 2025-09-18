@@ -1,3 +1,4 @@
+// src/components/Sidebar.jsx
 import { BarChart3, Table, Settings, LogOut, Moon } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -5,67 +6,128 @@ export default function Sidebar({ darkMode, toggleDarkMode }) {
   const navigate = useNavigate();
 
   const handleLogout = () => {
+    // Clear Supabase / local auth (depending on how you handle it)
     localStorage.removeItem("auth");
-    navigate("/");
+    navigate("/login"); // 🔹 go to /login instead of "/"
   };
 
   return (
     <aside
-      className={`w-64 ${
-        darkMode ? "bg-gray-900 border-gray-800" : "bg-gray-100 border-gray-300"
+      className={`w-64 border-r ${
+        darkMode
+          ? "bg-gray-900 border-gray-800 text-gray-100"
+          : "bg-gray-100 border-gray-300 text-gray-900"
       } p-6 flex flex-col justify-between min-h-screen`}
     >
+      {/* Header */}
       <div>
         <div className="flex items-center justify-between mb-10">
+          {/* Dark mode toggle */}
           <button
             aria-label="Toggle dark mode"
-            className={`rounded-full p-1 ${darkMode ? "bg-gray-900" : "bg-white"}`}
+            className={`rounded-full p-2 shadow ${
+              darkMode ? "bg-gray-800" : "bg-white"
+            }`}
             onClick={toggleDarkMode}
           >
             <Moon
-              size={28}
-              color={darkMode ? "#facc15" : "#888"}
+              size={22}
+              color={darkMode ? "#facc15" : "#555"}
               fill={darkMode ? "#facc15" : "none"}
             />
           </button>
-          <h1 className={`text-2xl font-bold ${darkMode ? "text-yellow-400" : "text-blue-600"}`}>
+
+          <h1
+            className={`text-xl font-bold tracking-wide ${
+              darkMode ? "text-yellow-400" : "text-blue-600"
+            }`}
+          >
             🚦 FlexTraff
           </h1>
         </div>
-        <nav className="space-y-4">
+
+        {/* Nav Links */}
+        <nav className="space-y-2">
           <Link
             to="/dashboard"
-            className={`flex items-center gap-2 p-2 rounded-lg transition-colors duration-150 ${
-              darkMode ? "hover:bg-gray-800 hover:text-yellow-400" : "hover:bg-blue-50 hover:text-blue-700"
+            className={`flex items-center gap-2 p-2 rounded-lg transition-colors ${
+              darkMode
+                ? "hover:bg-gray-800 hover:text-yellow-400"
+                : "hover:bg-blue-50 hover:text-blue-700"
             }`}
           >
-            <BarChart3 size={18} className={darkMode ? "text-yellow-400" : "text-blue-500"} />{" "}
+            <BarChart3
+              size={18}
+              className={darkMode ? "text-yellow-400" : "text-blue-500"}
+            />
             <span>Analytics</span>
           </Link>
+
           <Link
-            to="/dashboard"
-            className={`flex items-center gap-2 p-2 rounded-lg transition-colors duration-150 ${
-              darkMode ? "hover:bg-gray-800 hover:text-yellow-400" : "hover:bg-blue-50 hover:text-blue-700"
+            to="/traffic-data"
+            className={`flex items-center gap-2 p-2 rounded-lg transition-colors ${
+              darkMode
+                ? "hover:bg-gray-800 hover:text-yellow-400"
+                : "hover:bg-blue-50 hover:text-blue-700"
             }`}
           >
-            <Table size={18} className={darkMode ? "text-yellow-400" : "text-blue-500"} />{" "}
+            <Table
+              size={18}
+              className={darkMode ? "text-yellow-400" : "text-blue-500"}
+            />
             <span>Traffic Data</span>
           </Link>
 
-          {/* Changed route path from /control to /controls */}
           <Link
             to="/controls"
-            className={`flex items-center gap-2 p-2 rounded-lg transition-colors duration-150 ${
-              darkMode ? "hover:bg-gray-800 hover:text-yellow-400" : "hover:bg-blue-50 hover:text-blue-700"
+            className={`flex items-center gap-2 p-2 rounded-lg transition-colors ${
+              darkMode
+                ? "hover:bg-gray-800 hover:text-yellow-400"
+                : "hover:bg-blue-50 hover:text-blue-700"
             }`}
           >
-            <Settings size={18} className={darkMode ? "text-yellow-400" : "text-blue-500"} />{" "}
+            <Settings
+              size={18}
+              className={darkMode ? "text-yellow-400" : "text-blue-500"}
+            />
             <span>Controls</span>
+          </Link>
+
+          <Link
+            to="/logs"
+            className={`flex items-center gap-2 p-2 rounded-lg transition-colors ${
+              darkMode
+                ? "hover:bg-gray-800 hover:text-yellow-400"
+                : "hover:bg-blue-50 hover:text-blue-700"
+            }`}
+          >
+            <Table
+              size={18}
+              className={darkMode ? "text-yellow-400" : "text-blue-500"}
+            />
+            <span>Logs</span>
+          </Link>
+
+          <Link
+            to="/scanners"
+            className={`flex items-center gap-2 p-2 rounded-lg transition-colors ${
+              darkMode
+                ? "hover:bg-gray-800 hover:text-yellow-400"
+                : "hover:bg-blue-50 hover:text-blue-700"
+            }`}
+          >
+            <Settings
+              size={18}
+              className={darkMode ? "text-yellow-400" : "text-blue-500"}
+            />
+            <span>Scanners</span>
           </Link>
         </nav>
       </div>
+
+      {/* Logout */}
       <button
-        className="flex items-center gap-2 text-gray-400 hover:text-red-500 transition"
+        className="flex items-center gap-2 mt-6 text-gray-400 hover:text-red-500 transition"
         onClick={handleLogout}
       >
         <LogOut size={18} /> Logout
