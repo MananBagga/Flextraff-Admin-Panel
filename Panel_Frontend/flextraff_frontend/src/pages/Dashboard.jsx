@@ -44,88 +44,83 @@ export default function Dashboard({ darkMode, toggleDarkMode }) {
   }
 
   async function fetchRecentData() {
-    // get last 500 vehicle detections (optional filter by junction)
-    let query = supabase
-      .from("vehicle_detections")
-      .select("*")
-      .order("detection_timestamp", { ascending: false })
-      .limit(500);
-    if (junctionFilter) query = query.eq("junction_id", junctionFilter);
-    const { data: detections, error } = await query;
-    if (error) {
-      console.error(error);
-      return;
-    }
+  // get last 500 vehicle detections (optional filter by junction)
+  let query = supabase
+    .from("vehicle_detections")
+    .select("*")
+    .order("detection_timestamp", { ascending: false })
+    .limit(500);
 
-    // aggregate counts per lane (schema uses lane_number int)
-    const counts = { 1: 0, 2: 0, 3: 0, 4: 0 };
-    (detections || []).forEach((d) => {
-      const lane = Number(d.lane_number) || 0;
-      if (lane >= 1 && lane <= 4) counts[lane] = (counts[lane] || 0) + 1;
-    });
+  if (junctionFilter) {
+    query = query.eq("junction_id", junctionFilter);
+  }
 
-    const mapped = [
-      { lane: "North", cars: counts[1] || 0 },
-      { lane: "South", cars: counts[2] || 0 },
-      { lane: "East", cars: counts[3] || 0 },
-      { lane: "West", cars: counts[4] || 0 },
-    ];
-    setTrafficData(mapped);
+  const { data: detections, error } = await query;
+  if (error) {
+    console.error(error);
+    return;
+  }
 
-    // try to compute light distribution using latest traffic_cycles for the junction
-    const { data: cycles } = await supabase
+  // aggregate counts per lane
+  const counts = { 1: 0, 2: 0, 3: 0, 4: 0 };
+  (detections || []).forEach((d) => {
+    const lane = Number(d.lane_number) || 0;
+    if (lane >= 1 && lane <= 4) counts[lane]++;
+  });
+
+  const mapped = [
+    { lane: "North", cars: counts[1] },
+    { lane: "South", cars: counts[2] },
+    { lane: "East", cars: counts[3] },
+    { lane: "West", cars: counts[4] },
+  ];
+  setTrafficData(mapped);
+
+  // ✅ Only query traffic_cycles if junctionFilter exists
+  if (junctionFilter) {
+    const { data: cycles, error: cycleErr } = await supabase
       .from("traffic_cycles")
       .select("*")
       .eq("junction_id", junctionFilter)
       .order("id", { ascending: false })
       .limit(1);
 
-    const cycle = cycles && cycles.length ? cycles[0] : null;
-    if (cycle && cycle.total_cycle_time) {
+    if (cycleErr) console.error(cycleErr);
+
+    const cycle = cycles?.[0];
+    if (cycle?.total_cycle_time) {
       const green = [
         cycle.lane_1_green_time || 0,
         cycle.lane_2_green_time || 0,
         cycle.lane_3_green_time || 0,
         cycle.lane_4_green_time || 0,
       ];
-      const greenTotal = green.reduce((a, b) => a + b, 0) || 1;
+      const total = green.reduce((a, b) => a + b, 0) || 1;
+
       setLightDist([
-        {
-          name: "Green",
-          value: Math.round(
-            ((green[0] + green[1] + green[2] + green[3]) / greenTotal) * 100
-          ),
-        },
+        { name: "Green", value: Math.round((total / total) * 100) },
         { name: "Yellow", value: 10 },
-        {
-          name: "Red",
-          value: Math.max(
-            0,
-            100 -
-              Math.round(
-                ((green[0] + green[1] + green[2] + green[3]) / greenTotal) * 100
-              ) -
-              10
-          ),
-        },
-      ]);
-    } else {
-      // fallback defaults
-      setLightDist([
-        { name: "Green", value: 45 },
-        { name: "Yellow", value: 15 },
-        { name: "Red", value: 40 },
+        { name: "Red", value: 90 },
       ]);
     }
-
-    // last traffic logs (optional)
-    const { data: logsData } = await supabase
-      .from("vehicle_detections")
-      .select("detection_timestamp, lane_number, vehicle_type")
-      .order("detection_timestamp", { ascending: false })
-      .limit(10);
-    setLogs(logsData || []);
+  } else {
+    // fallback if no junction selected yet
+    setLightDist([
+      { name: "Green", value: 45 },
+      { name: "Yellow", value: 15 },
+      { name: "Red", value: 40 },
+    ]);
   }
+
+  const { data: logsData } = await supabase
+    .from("vehicle_detections")
+    .select("detection_timestamp, lane_number, vehicle_type")
+    .order("detection_timestamp", { ascending: false })
+    .limit(10);
+
+  setLogs(logsData || []);
+}
+
 
   return (
     <div
