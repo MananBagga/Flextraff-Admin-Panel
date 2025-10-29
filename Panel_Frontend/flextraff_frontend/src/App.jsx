@@ -3,7 +3,7 @@ import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Controls from "./pages/controls"; // Updated to capital C
-import { ThemeProvider, ThemeContext } from "./components/themecontext";
+import { ThemeProvider, ThemeContext } from "./components/ThemeContext";
 import TrafficData from "./pages/Traffic_data";
 import Logs from "./pages/Logs";
 import Scanners from "./pages/Scanners";
