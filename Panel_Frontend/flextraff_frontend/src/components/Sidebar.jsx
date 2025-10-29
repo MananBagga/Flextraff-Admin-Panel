@@ -1,6 +1,7 @@
 // src/components/Sidebar.jsx
 import { BarChart3, Table, Settings, LogOut, Moon } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
+import flextraff_logo from "../assets/flextraff_logo.png";
 
 export default function Sidebar({ darkMode, toggleDarkMode }) {
   const navigate = useNavigate();
@@ -42,7 +43,7 @@ export default function Sidebar({ darkMode, toggleDarkMode }) {
               darkMode ? "text-yellow-400" : "text-blue-600"
             }`}
           >
-            🚦 FlexTraff
+            <img src={flextraff_logo} alt="flextraff logo" className="w-10 h-10 flex items-center" /> FlexTraff
           </h1>
         </div>
 
