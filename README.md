@@ -680,7 +680,7 @@ By accessing or using this repository, you acknowledge that you have read, under
 | **Frontend Deploy** | Vercel |
 | **Backend API** | Render.com |
 | **Auth Service** | Supabase |
-| **Project Owner** | Manan Bagga |
+| **Project Owner** | Manan Bagga | Ajay Pratap Singh | Rakshit Vyas | Himang Bhatia |
 
 ---
 
