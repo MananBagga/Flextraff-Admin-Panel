@@ -1,0 +1,294 @@
+FLEXTRAFF ADMIN PANEL - PROPRIETARY LICENSE AGREEMENT
+
+Version 1.0
+Effective Date: November 2025
+Copyright © 2025 Flextraff & Manan Bagga. All rights reserved.
+
+================================================================================
+1. OWNERSHIP & INTELLECTUAL PROPERTY
+================================================================================
+
+This software, including all source code, documentation, assets, and related 
+materials (collectively, "Software") is the exclusive property of Flextraff 
+and Manan Bagga ("Copyright Holder"). This Software is NOT released under any 
+open source license (including GPL, MIT, Apache, BSD, or any other open source 
+license).
+
+All intellectual property rights in the Software are reserved by the Copyright 
+Holder. No rights are granted except as explicitly stated in this License.
+
+
+================================================================================
+2. DISCLAIMER - NOT OPEN SOURCE
+================================================================================
+
+This repository may be publicly visible on GitHub or other platforms. 
+However, public visibility does NOT constitute an open source release. 
+
+The Software remains proprietary and confidential regardless of repository 
+visibility settings. Public access is provided for collaboration purposes only 
+and does not grant any usage rights.
+
+
+================================================================================
+3. PERMITTED USE
+================================================================================
+
+Permission is hereby granted to authorized team members of Flextraff ONLY to:
+
+(a) View and study the source code for development and maintenance purposes
+(b) Deploy and run the Software as part of Flextraff's operations
+(c) Make necessary modifications for internal use only
+(d) Contribute to the codebase (with proper attribution to Flextraff)
+
+This permission is granted on a non-exclusive, non-transferable, revocable basis 
+and may be withdrawn at any time.
+
+UNAUTHORIZED USE IS PROHIBITED.
+
+
+================================================================================
+4. PROHIBITED USE
+================================================================================
+
+You may NOT, under any circumstances, without express prior written permission 
+from the Copyright Holder:
+
+(a) Copy, reproduce, or duplicate the Software in whole or in part
+(b) Publish, distribute, transmit, or make publicly available the Software
+(c) Sublicense, sell, lease, rent, or transfer usage rights to any third party
+(d) Use the Software for any commercial purpose outside of Flextraff operations
+(e) Create derivative works, modifications, or "inspired by" versions
+(f) Reverse engineer, decompile, disassemble, or attempt to derive the source code
+(g) Remove, obscure, or alter any copyright, license, or proprietary notices
+(h) Claim authorship, ownership, or any intellectual property rights
+(i) Fork the repository on GitHub or other platforms
+(j) Contribute to public forks or unauthorized distributions
+(k) Use the Software as a basis for competing products or services
+(l) Share credentials, API keys, or configuration files with unauthorized parties
+(m) Host or deploy the Software outside authorized Flextraff infrastructure
+
+
+================================================================================
+5. PERMISSION & LICENSING REQUESTS
+================================================================================
+
+If you are NOT an authorized Flextraff team member and wish to:
+- Use any part of this Software
+- Study or reference the codebase
+- Create derivative works or modifications
+- Distribute or deploy the Software
+- Request a different license arrangement
+
+You MUST obtain express written permission from:
+
+    Manan Bagga
+    Flextraff Founder & Copyright Holder
+    Email: [Your contact email]
+    
+    Subject: "Flextraff Admin Panel - License Request"
+
+Your request must include:
+1. Your full name and organization
+2. Purpose and intended use case
+3. Duration of requested license
+4. Any planned modifications or derivatives
+5. Intended deployment scope (internal/public)
+6. Acknowledgment that you understand these terms
+
+The Copyright Holder will review your request and respond within 5-10 business 
+days. Permission may be granted, conditionally granted, or denied at the sole 
+discretion of the Copyright Holder.
+
+If permission is granted, a separate written license agreement (Commercial 
+License, Academic License, etc.) will be provided with specific terms, 
+conditions, and requirements.
+
+
+================================================================================
+6. CONFIDENTIALITY
+================================================================================
+
+The Software and all associated documentation are confidential and proprietary. 
+If you have access to the Software:
+
+(a) You agree to maintain strict confidentiality
+(b) You will not disclose any part of the Software to unauthorized parties
+(c) You will not discuss implementation details, architecture, or code publicly
+(d) You will secure all access credentials and API keys
+(e) You acknowledge that breach of confidentiality causes irreparable harm
+
+
+================================================================================
+7. NO WARRANTY; DISCLAIMER OF LIABILITY
+================================================================================
+
+THE SOFTWARE IS PROVIDED "AS-IS" WITHOUT WARRANTY OF ANY KIND, EXPRESS OR 
+IMPLIED, INCLUDING BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, FITNESS 
+FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT.
+
+IN NO EVENT SHALL THE COPYRIGHT HOLDER BE LIABLE FOR:
+- Loss of data or profits
+- Business interruption
+- Indirect, incidental, special, or consequential damages
+- Any other damages whatsoever
+
+YOUR USE OF THE SOFTWARE IS AT YOUR OWN RISK.
+
+
+================================================================================
+8. ENFORCEMENT & REMEDIES
+================================================================================
+
+The Copyright Holder reserves the right to:
+
+(a) Monitor compliance with this License
+(b) Take immediate legal action against unauthorized use or distribution
+(c) Demand immediate cessation of infringing activities
+(d) Seek damages for breach of this License
+(e) Revoke access and user privileges immediately
+(f) Report violations to GitHub, hosting providers, or law enforcement
+
+Unauthorized use of this Software may result in:
+- Cease and desist notices
+- Civil litigation and damages
+- Criminal prosecution
+- Injunctive relief
+- Recovery of attorney fees and costs
+
+
+================================================================================
+9. TERMINATION
+================================================================================
+
+This License is effective immediately and continues indefinitely unless:
+
+(a) Explicitly terminated by the Copyright Holder in writing
+(b) You breach any term of this License (automatic termination)
+(c) You cease to be an authorized Flextraff team member
+
+Upon termination:
+- All rights granted under this License immediately cease
+- You must stop using the Software immediately
+- You must return or destroy all copies of the Software
+- You must comply with any outstanding confidentiality obligations
+
+
+================================================================================
+10. MODIFICATION OF TERMS
+================================================================================
+
+The Copyright Holder reserves the right to modify this License at any time. 
+Changes will be effective immediately upon posting to this repository. Your 
+continued use of the Software constitutes acceptance of any modifications.
+
+
+================================================================================
+11. SEVERABILITY
+================================================================================
+
+If any provision of this License is found to be invalid or unenforceable, the 
+remaining provisions shall continue in full force and effect.
+
+
+================================================================================
+12. ENTIRE AGREEMENT
+================================================================================
+
+This License constitutes the entire agreement between you and the Copyright 
+Holder regarding the Software. This License supersedes all prior negotiations, 
+representations, and agreements.
+
+
+================================================================================
+13. GOVERNING LAW & JURISDICTION
+================================================================================
+
+This License shall be governed by and construed in accordance with the laws 
+of [Your Jurisdiction], without regard to its conflict of law principles.
+
+You agree to submit to the exclusive jurisdiction of the courts in 
+[Your Jurisdiction] for any disputes arising from this License or your use 
+of the Software.
+
+
+================================================================================
+14. THIRD-PARTY SERVICES & COMPONENTS
+================================================================================
+
+The Software may include or depend on third-party libraries, services, and 
+components (e.g., React, Vite, Tailwind CSS, Supabase). These components are 
+governed by their respective licenses:
+
+- React: MIT License
+- Vite: MIT License
+- Tailwind CSS: MIT License
+- Supabase: Apache 2.0 License
+
+Your use of these components is subject to their respective licenses. The 
+Copyright Holder does not claim ownership of these third-party components.
+
+However, the combination and integration of these components into the Flextraff 
+Admin Panel remains proprietary.
+
+
+================================================================================
+15. ACCEPTANCE OF TERMS
+================================================================================
+
+BY ACCESSING, DOWNLOADING, VIEWING, OR USING THIS SOFTWARE, YOU ACKNOWLEDGE 
+THAT YOU:
+
+✓ Have read and understood this entire License
+✓ Agree to comply with all terms and conditions
+✓ Accept full responsibility for any unauthorized use
+✓ Understand that violations may result in legal action
+✓ Waive any claims against the Copyright Holder for licensing disputes
+✓ Will not attempt to circumvent or bypass these restrictions
+
+IF YOU DO NOT AGREE WITH THESE TERMS, YOU MUST NOT ACCESS OR USE THIS SOFTWARE.
+
+CONTINUED USE OF THIS SOFTWARE CONSTITUTES YOUR ACCEPTANCE OF THIS LICENSE.
+
+
+================================================================================
+16. CONTACT & SUPPORT
+================================================================================
+
+For licensing inquiries, questions, or permission requests, contact:
+
+    Manan Bagga
+    Flextraff Admin Panel Project Owner
+    Email: [Your contact email]
+    GitHub: MananBagga
+    
+    Repository: https://github.com/MananBagga/Flextraff-Admin-Panel
+    Documentation: See README.md
+
+
+================================================================================
+17. DEFINITIONS
+================================================================================
+
+- "Software": This project, including all code, documentation, and assets
+- "Copyright Holder": Flextraff and Manan Bagga
+- "You" or "User": Any person or entity accessing this Software
+- "Authorized": Explicitly granted permission by the Copyright Holder
+- "Derivative Work": Any modification, adaptation, or creation based on the Software
+- "Open Source": Code licensed under any recognized open source license
+
+
+================================================================================
+
+This is a legal document. If you do not understand any part of this License, 
+please seek legal counsel before using the Software.
+
+Last Updated: November 2025
+License Version: 1.0
+
+================================================================================
+END OF LICENSE
+
+Copyright © 2025 Flextraff & Manan Bagga. All rights reserved.
+For inquiries: [Your contact email]
+================================================================================
