@@ -16,40 +16,48 @@ export default function Login() {
   // 🔐 NORMAL BACKEND LOGIN
   // =========================
   const handleLogin = async (e) => {
-    e.preventDefault();
-    setError("");
-    setLoading(true);
+  e.preventDefault();
+  setError("");
+  setLoading(true);
 
-    try {
-      const res = await fetch(`${API_URL}/auth/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          username: user,
-          password: pass,
-        }),
-      });
+  try {
+    const res = await fetch(`${API_URL}/api/v1/users/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        username: user,
+        password: pass,
+      }),
+    });
 
-      const data = await res.json();
+    const data = await res.json();
 
-      if (!res.ok) {
-        throw new Error(data.detail || "Invalid credentials");
-      }
-
-      // Store auth data
-      localStorage.setItem("access_token", data.access_token);
-      localStorage.setItem("refresh_token", data.refresh_token);
-      localStorage.setItem("user", JSON.stringify(data.user));
-      localStorage.setItem("auth", "true");
-
-      navigate("/dashboard");
-    } catch (err) {
-      console.error("Login error:", err);
-      setError(err.message || "Login failed");
-    } finally {
-      setLoading(false);
+    if (!res.ok) {
+      throw new Error(data.detail || "Invalid credentials");
     }
-  };
+
+    // 🔐 CHECK FOR 2FA
+    if (data.requires_2fa) {
+      localStorage.setItem("temp_username", data.username);
+      navigate("/verify-2fa");
+      return;
+    }
+
+    // ✅ Normal login
+    localStorage.setItem("access_token", data.access_token);
+    localStorage.setItem("refresh_token", data.refresh_token);
+    localStorage.setItem("user", JSON.stringify(data.user));
+    localStorage.setItem("auth", "true");
+
+    navigate("/dashboard");
+
+  } catch (err) {
+    console.error("Login error:", err);
+    setError(err.message || "Login failed");
+  } finally {
+    setLoading(false);
+  }
+};
 
   // =========================
   // 🛡️ ADMIN QUICK LOGIN
