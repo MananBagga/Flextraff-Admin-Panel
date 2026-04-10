@@ -1,32 +1,83 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import logo from "../assets/flextraff_logo.png";
+
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8001";
 
 export default function Login() {
   const [user, setUser] = useState("");
   const [pass, setPass] = useState("");
-  const [error, setError] = useState(""); // error state
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   setUser("");
-  //   setPass("");
-  // }, []);
+  // =========================
+  // 🔐 NORMAL BACKEND LOGIN
+  // =========================
+  const handleLogin = async (e) => {
+  e.preventDefault();
+  setError("");
+  setLoading(true);
 
-  const handleLogin = (e) => {
-    e.preventDefault();
-    setError(""); // reset previous error
+  try {
+    const res = await fetch(`${API_URL}/api/v1/users/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        username: user,
+        password: pass,
+      }),
+    });
 
-    try {
-      if (user === "admin" && pass === "admin123") {
-        localStorage.setItem("auth", true);
-        navigate("/dashboard");
-      } else {
-        setError("Invalid credentials. Please try again.");
-      }
-    } catch (err) {
-      console.error("Login error:", err);
-      setError("Something went wrong. Please try again later.");
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data.detail || "Invalid credentials");
+    }
+
+    // 🔐 CHECK FOR 2FA
+    if (data.requires_2fa) {
+      localStorage.setItem("temp_username", data.username);
+      navigate("/verify-2fa");
+      return;
+    }
+
+    // ✅ Normal login
+    localStorage.setItem("access_token", data.access_token);
+    localStorage.setItem("refresh_token", data.refresh_token);
+    localStorage.setItem("user", JSON.stringify(data.user));
+    localStorage.setItem("auth", "true");
+
+    navigate("/dashboard");
+
+  } catch (err) {
+    console.error("Login error:", err);
+    setError(err.message || "Login failed");
+  } finally {
+    setLoading(false);
+  }
+};
+
+  // =========================
+  // 🛡️ ADMIN QUICK LOGIN
+  // =========================
+  const handleAdminLogin = () => {
+    setError("");
+
+    if (user === "admin" && pass === "admin123") {
+      localStorage.setItem("auth", "true");
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          username: "admin",
+          role: "ADMIN",
+        })
+      );
+
+      navigate("/dashboard");
+    } else {
+      setError("Invalid admin credentials");
     }
   };
 
@@ -48,44 +99,70 @@ export default function Login() {
           className="bg-gray-900/90 backdrop-blur-md p-10 rounded-2xl shadow-xl w-96 border border-gray-700"
         >
           <h1 className="text-3xl font-bold text-yellow-400 mb-8 text-center tracking-wide">
-            FlexTraff Admin
+            FlexTraff Login
           </h1>
 
           {/* Username */}
           <div className="mb-5">
-            <label className="block text-sm text-gray-300 mb-2">Username</label>
+            <label className="block text-sm text-gray-300 mb-2">
+              Username
+            </label>
             <input
               type="text"
               placeholder="Enter username"
               value={user}
               onChange={(e) => setUser(e.target.value)}
               className="w-full p-3 rounded-lg bg-gray-800 text-white placeholder-gray-500 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+              required
             />
           </div>
 
           {/* Password */}
           <div className="mb-3">
-            <label className="block text-sm text-gray-300 mb-2">Password</label>
+            <label className="block text-sm text-gray-300 mb-2">
+              Password
+            </label>
             <input
               type="password"
               placeholder="Enter password"
               value={pass}
               onChange={(e) => setPass(e.target.value)}
               className="w-full p-3 rounded-lg bg-gray-800 text-white placeholder-gray-500 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+              required
             />
           </div>
 
-          {/* Error Message */}
+          {/* Error */}
           {error && (
             <p className="text-red-400 text-sm mb-4">{error}</p>
           )}
 
-          {/* Button */}
-          <button className="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-semibold py-3 rounded-lg shadow-md transition duration-200">
-            Login
+          {/* Normal Login */}
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-semibold py-3 rounded-lg shadow-md transition duration-200 disabled:opacity-60"
+          >
+            {loading ? "Logging in..." : "Login"}
           </button>
 
-          {/* Small footer text */}
+          {/* Divider */}
+          <div className="flex items-center my-6">
+            <div className="flex-grow border-t border-gray-700" />
+            <span className="mx-3 text-xs text-gray-500">OR</span>
+            <div className="flex-grow border-t border-gray-700" />
+          </div>
+
+          {/* Admin Login */}
+          <button
+            type="button"
+            onClick={handleAdminLogin}
+            className="w-full bg-gray-700 hover:bg-gray-600 text-white font-semibold py-3 rounded-lg shadow-md transition duration-200"
+          >
+            Admin Login
+          </button>
+
+          {/* Footer */}
           <p className="text-xs text-gray-500 text-center mt-6">
             🚦 Authorized access only
           </p>
