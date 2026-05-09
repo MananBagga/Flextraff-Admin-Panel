@@ -9,6 +9,7 @@ import Logs from "./pages/Logs";
 import Scanners from "./pages/Scanners";
 import { useContext } from "react";
 import Verify2FA from "./pages/Verify2fa";
+import Setup2FA from "./pages/Setup2FA";
 
 function AppRoutes() {
   const { darkMode, toggleDarkMode } = useContext(ThemeContext);
@@ -61,6 +62,7 @@ function AppRoutes() {
           }
         />
         <Route path="/verify-2fa" element={<Verify2FA />} />
+        <Route path="/setup-2fa" element={<Setup2FA />} />
       </Routes>
     </Router>
   );
