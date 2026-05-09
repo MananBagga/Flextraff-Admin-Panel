@@ -2,7 +2,9 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import logo from "../assets/flextraff_logo.png";
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
+const API_URL = import.meta.env.DEV
+  ? "http://localhost:8001"
+  : "https://flextraff-backend-production-186c.up.railway.app/";
 
 export default function Login() {
   const [user, setUser] = useState("");
