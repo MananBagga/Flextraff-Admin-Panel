@@ -9,7 +9,7 @@ import Logs from "./pages/Logs";
 import Scanners from "./pages/Scanners";
 import { useContext } from "react";
 import Verify2FA from "./pages/Verify2fa";
-import Setup2FA from "./pages/Setup2FA";
+import Setup2FA from "./pages/setup2FA";
 
 function AppRoutes() {
   const { darkMode, toggleDarkMode } = useContext(ThemeContext);
