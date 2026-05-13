@@ -2,7 +2,9 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import logo from "../assets/flextraff_logo.png";
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8001";
+const API_URL = import.meta.env.DEV
+  ? "http://localhost:8001"
+  : "https://flextraff-backend-production-186c.up.railway.app/";
 
 export default function Login() {
   const [user, setUser] = useState("");
@@ -16,48 +18,61 @@ export default function Login() {
   // 🔐 NORMAL BACKEND LOGIN
   // =========================
   const handleLogin = async (e) => {
-  e.preventDefault();
-  setError("");
-  setLoading(true);
+    e.preventDefault();
+    setError("");
+    setLoading(true);
 
-  try {
-    const res = await fetch(`${API_URL}/api/v1/users/login`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        username: user,
-        password: pass,
-      }),
-    });
+    try {
+      const res = await fetch(`${API_URL}/api/v1/users/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          username: user,
+          password: pass,
+        }),
+      });
 
-    const data = await res.json();
+      const data = await res.json();
 
-    if (!res.ok) {
-      throw new Error(data.detail || "Invalid credentials");
+      if (!res.ok) {
+        throw new Error(data.detail || "Invalid credentials");
+      }
+
+      // 🔐 CHECK FOR 2FA
+      // =====================================
+      // FORCE 2FA SETUP
+      // =====================================
+      if (data.requires_2fa_setup) {
+        localStorage.setItem("temp_username", data.username);
+        localStorage.setItem("temp_token", data.temp_token);
+        navigate("/setup-2fa");
+        return;
+      }
+
+      // =====================================
+      // VERIFY EXISTING 2FA
+      // =====================================
+      if (data.requires_2fa) {
+        localStorage.setItem("temp_username", data.username);
+        navigate("/verify-2fa");
+        return;
+      }
+
+      // ✅ Normal login
+      localStorage.setItem("access_token", data.access_token);
+      localStorage.setItem("refresh_token", data.refresh_token);
+      localStorage.setItem("user", JSON.stringify(data.user));
+      localStorage.setItem("auth", "true");
+
+      navigate("/dashboard");
+
+    } catch (err) {
+      console.error("Login error:", err);
+      setError(err.message || "Login failed");
+    } finally {
+      setLoading(false);
     }
-
-    // 🔐 CHECK FOR 2FA
-    if (data.requires_2fa) {
-      localStorage.setItem("temp_username", data.username);
-      navigate("/verify-2fa");
-      return;
-    }
-
-    // ✅ Normal login
-    localStorage.setItem("access_token", data.access_token);
-    localStorage.setItem("refresh_token", data.refresh_token);
-    localStorage.setItem("user", JSON.stringify(data.user));
-    localStorage.setItem("auth", "true");
-
-    navigate("/dashboard");
-
-  } catch (err) {
-    console.error("Login error:", err);
-    setError(err.message || "Login failed");
-  } finally {
-    setLoading(false);
-  }
-};
+  };
 
   // =========================
   // 🛡️ ADMIN QUICK LOGIN

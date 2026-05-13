@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8001";
+const API_URL = import.meta.env.DEV
+  ? "http://localhost:8001"
+  : "https://flextraff-backend-production-186c.up.railway.app/";
 
 export default function Verify2FA() {
   const [otp, setOtp] = useState("");
@@ -15,14 +17,12 @@ export default function Verify2FA() {
     setError("");
 
     try {
-      const res = await fetch(`${API_URL}/auth/2fa/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          username,
-          code: otp,
-        }),
-      });
+      const res = await fetch(
+        `${API_URL}/auth/2fa/login?username=${username}&code=${otp}`,
+        {
+          method: "POST",
+        }
+      );
 
       const data = await res.json();
 
