@@ -1,5 +1,13 @@
 // src/components/Sidebar.jsx
-import { BarChart3, Table, Settings, LogOut, Moon } from "lucide-react";
+import {
+  BarChart3,
+  Table,
+  Settings,
+  LogOut,
+  Moon,
+  UserPlus,
+  Users,
+} from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import flextraff_logo from "../assets/flextraff_logo.png";
 
@@ -7,9 +15,8 @@ export default function Sidebar({ darkMode, toggleDarkMode }) {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    // Clear Supabase / local auth (depending on how you handle it)
     localStorage.removeItem("auth");
-    navigate("/login"); // 🔹 go to /login instead of "/"
+    navigate("/login");
   };
 
   return (
@@ -23,12 +30,9 @@ export default function Sidebar({ darkMode, toggleDarkMode }) {
       {/* Header */}
       <div>
         <div className="flex items-center justify-between mb-10">
-          {/* Dark mode toggle */}
           <button
             aria-label="Toggle dark mode"
-            className={`rounded-full p-2 shadow ${
-              darkMode ? "bg-gray-800" : "bg-white"
-            }`}
+            className={`rounded-full p-2 shadow ${darkMode ? "bg-gray-800" : "bg-white"}`}
             onClick={toggleDarkMode}
           >
             <Moon
@@ -39,11 +43,14 @@ export default function Sidebar({ darkMode, toggleDarkMode }) {
           </button>
 
           <h1
-            className={`text-xl font-bold tracking-wide ${
-              darkMode ? "text-yellow-400" : "text-blue-600"
-            }`}
+            className={`text-xl font-bold tracking-wide ${darkMode ? "text-yellow-400" : "text-blue-600"}`}
           >
-            <img src={flextraff_logo} alt="flextraff logo" className="w-10 h-10 flex items-center" /> FlexTraff
+            <img
+              src={flextraff_logo}
+              alt="flextraff logo"
+              className="w-10 h-10 flex items-center"
+            />
+            FlexTraff
           </h1>
         </div>
 
@@ -51,11 +58,7 @@ export default function Sidebar({ darkMode, toggleDarkMode }) {
         <nav className="space-y-2">
           <Link
             to="/dashboard"
-            className={`flex items-center gap-2 p-2 rounded-lg transition-colors ${
-              darkMode
-                ? "hover:bg-gray-800 hover:text-yellow-400"
-                : "hover:bg-blue-50 hover:text-blue-700"
-            }`}
+            className={`flex items-center gap-2 p-2 rounded-lg transition-colors ${darkMode ? "hover:bg-gray-800 hover:text-yellow-400" : "hover:bg-blue-50 hover:text-blue-700"}`}
           >
             <BarChart3
               size={18}
@@ -66,11 +69,7 @@ export default function Sidebar({ darkMode, toggleDarkMode }) {
 
           <Link
             to="/traffic-data"
-            className={`flex items-center gap-2 p-2 rounded-lg transition-colors ${
-              darkMode
-                ? "hover:bg-gray-800 hover:text-yellow-400"
-                : "hover:bg-blue-50 hover:text-blue-700"
-            }`}
+            className={`flex items-center gap-2 p-2 rounded-lg transition-colors ${darkMode ? "hover:bg-gray-800 hover:text-yellow-400" : "hover:bg-blue-50 hover:text-blue-700"}`}
           >
             <Table
               size={18}
@@ -81,11 +80,7 @@ export default function Sidebar({ darkMode, toggleDarkMode }) {
 
           <Link
             to="/controls"
-            className={`flex items-center gap-2 p-2 rounded-lg transition-colors ${
-              darkMode
-                ? "hover:bg-gray-800 hover:text-yellow-400"
-                : "hover:bg-blue-50 hover:text-blue-700"
-            }`}
+            className={`flex items-center gap-2 p-2 rounded-lg transition-colors ${darkMode ? "hover:bg-gray-800 hover:text-yellow-400" : "hover:bg-blue-50 hover:text-blue-700"}`}
           >
             <Settings
               size={18}
@@ -96,11 +91,7 @@ export default function Sidebar({ darkMode, toggleDarkMode }) {
 
           <Link
             to="/logs"
-            className={`flex items-center gap-2 p-2 rounded-lg transition-colors ${
-              darkMode
-                ? "hover:bg-gray-800 hover:text-yellow-400"
-                : "hover:bg-blue-50 hover:text-blue-700"
-            }`}
+            className={`flex items-center gap-2 p-2 rounded-lg transition-colors ${darkMode ? "hover:bg-gray-800 hover:text-yellow-400" : "hover:bg-blue-50 hover:text-blue-700"}`}
           >
             <Table
               size={18}
@@ -111,17 +102,40 @@ export default function Sidebar({ darkMode, toggleDarkMode }) {
 
           <Link
             to="/scanners"
-            className={`flex items-center gap-2 p-2 rounded-lg transition-colors ${
-              darkMode
-                ? "hover:bg-gray-800 hover:text-yellow-400"
-                : "hover:bg-blue-50 hover:text-blue-700"
-            }`}
+            className={`flex items-center gap-2 p-2 rounded-lg transition-colors ${darkMode ? "hover:bg-gray-800 hover:text-yellow-400" : "hover:bg-blue-50 hover:text-blue-700"}`}
           >
             <Settings
               size={18}
               className={darkMode ? "text-yellow-400" : "text-blue-500"}
             />
             <span>Scanners</span>
+          </Link>
+
+          {/* ── User Management ── */}
+          <div
+            className={`my-3 border-t ${darkMode ? "border-gray-700" : "border-gray-300"}`}
+          />
+
+          <Link
+            to="/users"
+            className={`flex items-center gap-2 p-2 rounded-lg transition-colors ${darkMode ? "hover:bg-gray-800 hover:text-yellow-400" : "hover:bg-blue-50 hover:text-blue-700"}`}
+          >
+            <Users
+              size={18}
+              className={darkMode ? "text-yellow-400" : "text-blue-500"}
+            />
+            <span>Users</span>
+          </Link>
+
+          <Link
+            to="/create-user"
+            className={`flex items-center gap-2 p-2 rounded-lg transition-colors ${darkMode ? "hover:bg-gray-800 hover:text-yellow-400" : "hover:bg-blue-50 hover:text-blue-700"}`}
+          >
+            <UserPlus
+              size={18}
+              className={darkMode ? "text-yellow-400" : "text-blue-500"}
+            />
+            <span>Create User</span>
           </Link>
         </nav>
       </div>
