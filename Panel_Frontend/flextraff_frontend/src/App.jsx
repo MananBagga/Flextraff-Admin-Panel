@@ -1,8 +1,8 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom"; // 👈 Added Navigate here
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
-import Controls from "./pages/controls"; // Updated to capital C
+import Controls from "./pages/controls"; 
 import { ThemeProvider, ThemeContext } from "./components/ThemeContext";
 import TrafficData from "./pages/Traffic_data";
 import Logs from "./pages/Logs";
@@ -11,6 +11,9 @@ import { useContext } from "react";
 import Verify2FA from "./pages/Verify2fa";
 import Setup2FA from "./pages/setup2FA";
 import CreateUser from "./pages/CreateUser";
+import { AdminRoute } from "./components/ProtectedRoute";
+import Users from "./pages/Users";
+import UserDetail from "./pages/UserDetail";
 
 function AppRoutes() {
   const { darkMode, toggleDarkMode } = useContext(ThemeContext);
@@ -18,7 +21,10 @@ function AppRoutes() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Login />} />
+        {/* 👇 FIX: Handles the root "/" path. If a user loads your site, it forces them to /login */}
+        <Route path="/" element={<Navigate to="/login" replace />} />
+
+        <Route path="/login" element={<Login />} />
         <Route
           path="/dashboard"
           element={
@@ -67,11 +73,30 @@ function AppRoutes() {
         <Route
           path="/create-user"
           element={
-            <ProtectedRoute>
+            <AdminRoute>
               <CreateUser darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
-            </ProtectedRoute>
+            </AdminRoute>
           }
         />
+        <Route
+          path="/users"
+          element={
+            <AdminRoute>
+              <Users darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path="/users/:user_id"
+          element={
+            <AdminRoute>
+              <UserDetail darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
+            </AdminRoute>
+          }
+        />
+
+        {/* 💡 OPTIONAL BONUS CATCH-ALL: Handles any typos or invalid URLs */}
+        <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
     </Router>
   );

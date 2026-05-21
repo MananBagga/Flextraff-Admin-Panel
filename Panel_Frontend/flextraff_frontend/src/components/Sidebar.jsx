@@ -11,13 +11,20 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import flextraff_logo from "../assets/flextraff_logo.png";
 
+// const currentUser = JSON.parse(localStorage.getItem("user") || "{}");
+// const isAdmin = currentUser.role === "ADMIN";
+
 export default function Sidebar({ darkMode, toggleDarkMode }) {
   const navigate = useNavigate();
+  const currentUser = JSON.parse(localStorage.getItem("user") || "{}");
+  const isAdmin = currentUser.role === "ADMIN";
 
   const handleLogout = () => {
-    localStorage.removeItem("auth");
-    navigate("/login");
-  };
+  localStorage.removeItem("auth");
+  localStorage.removeItem("user");
+
+  navigate("/login", { replace: true });
+};
 
   return (
     <aside
@@ -111,32 +118,36 @@ export default function Sidebar({ darkMode, toggleDarkMode }) {
             <span>Scanners</span>
           </Link>
 
-          {/* ── User Management ── */}
-          <div
-            className={`my-3 border-t ${darkMode ? "border-gray-700" : "border-gray-300"}`}
-          />
+          {/* ── User Management (Admin only) ── */}
+          {isAdmin && (
+            <>
+              <div
+                className={`my-3 border-t ${darkMode ? "border-gray-700" : "border-gray-300"}`}
+              />
 
-          <Link
-            to="/users"
-            className={`flex items-center gap-2 p-2 rounded-lg transition-colors ${darkMode ? "hover:bg-gray-800 hover:text-yellow-400" : "hover:bg-blue-50 hover:text-blue-700"}`}
-          >
-            <Users
-              size={18}
-              className={darkMode ? "text-yellow-400" : "text-blue-500"}
-            />
-            <span>Users</span>
-          </Link>
+              <Link
+                to="/users"
+                className={`flex items-center gap-2 p-2 rounded-lg transition-colors ${darkMode ? "hover:bg-gray-800 hover:text-yellow-400" : "hover:bg-blue-50 hover:text-blue-700"}`}
+              >
+                <Users
+                  size={18}
+                  className={darkMode ? "text-yellow-400" : "text-blue-500"}
+                />
+                <span>Users</span>
+              </Link>
 
-          <Link
-            to="/create-user"
-            className={`flex items-center gap-2 p-2 rounded-lg transition-colors ${darkMode ? "hover:bg-gray-800 hover:text-yellow-400" : "hover:bg-blue-50 hover:text-blue-700"}`}
-          >
-            <UserPlus
-              size={18}
-              className={darkMode ? "text-yellow-400" : "text-blue-500"}
-            />
-            <span>Create User</span>
-          </Link>
+              <Link
+                to="/create-user"
+                className={`flex items-center gap-2 p-2 rounded-lg transition-colors ${darkMode ? "hover:bg-gray-800 hover:text-yellow-400" : "hover:bg-blue-50 hover:text-blue-700"}`}
+              >
+                <UserPlus
+                  size={18}
+                  className={darkMode ? "text-yellow-400" : "text-blue-500"}
+                />
+                <span>Create User</span>
+              </Link>
+            </>
+          )}
         </nav>
       </div>
 
