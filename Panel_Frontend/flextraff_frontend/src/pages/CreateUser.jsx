@@ -87,15 +87,14 @@ export default function CreateUser({ darkMode, toggleDarkMode }) {
       const safeEmail = rawEmail === "" ? null : rawEmail;
 
       const userRes = await fetch(`${API_URL}/api/v1/admin/`, {
-        // <-- Verify this URL!
         method: "POST",
         headers,
         body: JSON.stringify({
-          username: form.username.trim(), // Must be 3-50 chars
-          password: form.password, // MUST be at least 8 chars!
-          full_name: form.full_name.trim(), // Must be 2-100 chars
-          email: safeEmail, // Sends valid email string OR null
-          role: "OPERATOR", // Matches the regex perfectly
+          username: form.username.trim(),
+          password: form.password,
+          full_name: form.full_name.trim(),
+          email: safeEmail,
+          role: "OPERATOR",
         }),
       });
 
@@ -105,14 +104,13 @@ export default function CreateUser({ darkMode, toggleDarkMode }) {
         let errMsg = "Failed to create user";
         if (userData.detail) {
           if (Array.isArray(userData.detail)) {
-            // Formats FastAPI errors neatly: "email: field required, name: missing"
             errMsg = userData.detail
               .map((e) => `${e.loc[e.loc.length - 1]}: ${e.msg}`)
               .join(" | ");
           } else if (typeof userData.detail === "string") {
             errMsg = userData.detail;
           } else {
-            errMsg = JSON.stringify(userData.detail); // Catch-all
+            errMsg = JSON.stringify(userData.detail);
           }
         }
         throw new Error(errMsg);
@@ -120,28 +118,28 @@ export default function CreateUser({ darkMode, toggleDarkMode }) {
 
       const newUserId = userData.id;
 
-      // ── Step 2: Bulk assign junctions ────────────────────────────────
-      const numericJunctionIds = selectedJunctions.map((id) => Number(id));
+      // ── Step 2: Assign junctions one by one ──────────────────────────
 
-      const junctionRes = await fetch(
-        `${API_URL}/api/v1/admin/users/${newUserId}/junctions/bulk`,
-        {
-          method: "POST",
-          headers,
-          body: JSON.stringify({
-            user_id: newUserId,
-            junction_ids: numericJunctionIds, // <--- Sending the fixed array here
-            access_level: "OPERATOR",
-          }),
-        },
-      );
-
-      const junctionData = await junctionRes.json();
-
-      if (!junctionRes.ok) {
-        throw new Error(
-          junctionData.detail || "User created but junction assignment failed",
+      for (const junctionId of selectedJunctions) {
+        const junctionRes = await fetch(
+          `${API_URL}/api/v1/admin/users/${newUserId}/junctions/`,
+          {
+            method: "POST",
+            headers,
+            body: JSON.stringify({
+              user_id: newUserId,
+              junction_id: Number(junctionId),
+              access_level: "OPERATOR",
+            }),
+          },
         );
+        const junctionData = await junctionRes.json();
+        if (!junctionRes.ok) {
+          throw new Error(
+            junctionData.detail ||
+              "User created but junction assignment failed",
+          );
+        }
       }
 
       // ── Success ───────────────────────────────────────────────────────
