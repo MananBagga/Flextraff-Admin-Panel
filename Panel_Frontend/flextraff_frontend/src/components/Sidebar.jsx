@@ -7,12 +7,10 @@ import {
   Moon,
   UserPlus,
   Users,
+  GitBranch,
 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import flextraff_logo from "../assets/flextraff_logo.png";
-
-// const currentUser = JSON.parse(localStorage.getItem("user") || "{}");
-// const isAdmin = currentUser.role === "ADMIN";
 
 export default function Sidebar({ darkMode, toggleDarkMode }) {
   const navigate = useNavigate();
@@ -20,11 +18,20 @@ export default function Sidebar({ darkMode, toggleDarkMode }) {
   const isAdmin = currentUser.role === "ADMIN";
 
   const handleLogout = () => {
-  localStorage.removeItem("auth");
-  localStorage.removeItem("user");
+    localStorage.removeItem("auth");
+    localStorage.removeItem("user");
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("refresh_token");
+    navigate("/", { replace: true });
+  };
 
-  navigate("/login", { replace: true });
-};
+  const linkCls = `flex items-center gap-2 p-2 rounded-lg transition-colors ${
+    darkMode
+      ? "hover:bg-gray-800 hover:text-yellow-400"
+      : "hover:bg-blue-50 hover:text-blue-700"
+  }`;
+  const iconCls = darkMode ? "text-yellow-400" : "text-blue-500";
+  const dividerCls = `my-3 border-t ${darkMode ? "border-gray-700" : "border-gray-300"}`;
 
   return (
     <aside
@@ -48,7 +55,6 @@ export default function Sidebar({ darkMode, toggleDarkMode }) {
               fill={darkMode ? "#facc15" : "none"}
             />
           </button>
-
           <h1
             className={`text-xl font-bold tracking-wide ${darkMode ? "text-yellow-400" : "text-blue-600"}`}
           >
@@ -63,87 +69,48 @@ export default function Sidebar({ darkMode, toggleDarkMode }) {
 
         {/* Nav Links */}
         <nav className="space-y-2">
-          <Link
-            to="/dashboard"
-            className={`flex items-center gap-2 p-2 rounded-lg transition-colors ${darkMode ? "hover:bg-gray-800 hover:text-yellow-400" : "hover:bg-blue-50 hover:text-blue-700"}`}
-          >
-            <BarChart3
-              size={18}
-              className={darkMode ? "text-yellow-400" : "text-blue-500"}
-            />
+          <Link to="/dashboard" className={linkCls}>
+            <BarChart3 size={18} className={iconCls} />
             <span>Analytics</span>
           </Link>
 
-          <Link
-            to="/traffic-data"
-            className={`flex items-center gap-2 p-2 rounded-lg transition-colors ${darkMode ? "hover:bg-gray-800 hover:text-yellow-400" : "hover:bg-blue-50 hover:text-blue-700"}`}
-          >
-            <Table
-              size={18}
-              className={darkMode ? "text-yellow-400" : "text-blue-500"}
-            />
+          <Link to="/traffic-data" className={linkCls}>
+            <Table size={18} className={iconCls} />
             <span>Traffic Data</span>
           </Link>
 
-          <Link
-            to="/controls"
-            className={`flex items-center gap-2 p-2 rounded-lg transition-colors ${darkMode ? "hover:bg-gray-800 hover:text-yellow-400" : "hover:bg-blue-50 hover:text-blue-700"}`}
-          >
-            <Settings
-              size={18}
-              className={darkMode ? "text-yellow-400" : "text-blue-500"}
-            />
+          <Link to="/controls" className={linkCls}>
+            <Settings size={18} className={iconCls} />
             <span>Controls</span>
           </Link>
 
-          <Link
-            to="/logs"
-            className={`flex items-center gap-2 p-2 rounded-lg transition-colors ${darkMode ? "hover:bg-gray-800 hover:text-yellow-400" : "hover:bg-blue-50 hover:text-blue-700"}`}
-          >
-            <Table
-              size={18}
-              className={darkMode ? "text-yellow-400" : "text-blue-500"}
-            />
+          <Link to="/logs" className={linkCls}>
+            <Table size={18} className={iconCls} />
             <span>Logs</span>
           </Link>
 
-          <Link
-            to="/scanners"
-            className={`flex items-center gap-2 p-2 rounded-lg transition-colors ${darkMode ? "hover:bg-gray-800 hover:text-yellow-400" : "hover:bg-blue-50 hover:text-blue-700"}`}
-          >
-            <Settings
-              size={18}
-              className={darkMode ? "text-yellow-400" : "text-blue-500"}
-            />
+          <Link to="/scanners" className={linkCls}>
+            <Settings size={18} className={iconCls} />
             <span>Scanners</span>
           </Link>
 
-          {/* ── User Management (Admin only) ── */}
+          {/* ── Admin only ── */}
           {isAdmin && (
             <>
-              <div
-                className={`my-3 border-t ${darkMode ? "border-gray-700" : "border-gray-300"}`}
-              />
+              <div className={dividerCls} />
 
-              <Link
-                to="/users"
-                className={`flex items-center gap-2 p-2 rounded-lg transition-colors ${darkMode ? "hover:bg-gray-800 hover:text-yellow-400" : "hover:bg-blue-50 hover:text-blue-700"}`}
-              >
-                <Users
-                  size={18}
-                  className={darkMode ? "text-yellow-400" : "text-blue-500"}
-                />
+              <Link to="/junctions" className={linkCls}>
+                <GitBranch size={18} className={iconCls} />
+                <span>Junctions</span>
+              </Link>
+
+              <Link to="/users" className={linkCls}>
+                <Users size={18} className={iconCls} />
                 <span>Users</span>
               </Link>
 
-              <Link
-                to="/create-user"
-                className={`flex items-center gap-2 p-2 rounded-lg transition-colors ${darkMode ? "hover:bg-gray-800 hover:text-yellow-400" : "hover:bg-blue-50 hover:text-blue-700"}`}
-              >
-                <UserPlus
-                  size={18}
-                  className={darkMode ? "text-yellow-400" : "text-blue-500"}
-                />
+              <Link to="/create-user" className={linkCls}>
+                <UserPlus size={18} className={iconCls} />
                 <span>Create User</span>
               </Link>
             </>

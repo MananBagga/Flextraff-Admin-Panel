@@ -1,8 +1,13 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom"; // 👈 Added Navigate here
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom"; // 👈 Added Navigate here
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
-import Controls from "./pages/controls"; 
+import Controls from "./pages/controls";
 import { ThemeProvider, ThemeContext } from "./components/ThemeContext";
 import TrafficData from "./pages/Traffic_data";
 import Logs from "./pages/Logs";
@@ -14,6 +19,7 @@ import CreateUser from "./pages/CreateUser";
 import { AdminRoute } from "./components/ProtectedRoute";
 import Users from "./pages/Users";
 import UserDetail from "./pages/UserDetail";
+import Junctions from "./pages/Junctions";
 
 function AppRoutes() {
   const { darkMode, toggleDarkMode } = useContext(ThemeContext);
@@ -91,6 +97,14 @@ function AppRoutes() {
           element={
             <AdminRoute>
               <UserDetail darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path="/junctions"
+          element={
+            <AdminRoute>
+              <Junctions darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
             </AdminRoute>
           }
         />
