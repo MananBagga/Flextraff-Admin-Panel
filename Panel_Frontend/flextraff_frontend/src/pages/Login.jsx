@@ -1,4 +1,3 @@
-// src/pages/Login.jsx
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import logo from "../assets/flextraff_logo.png";
@@ -65,6 +64,8 @@ export default function Login() {
   };
 
   // ── Admin login — hits real backend, gets real token ──────────────────
+  // FIX: removed hardcoded credential bypass (was storing role: "ADMIN" which
+  // caused 403 on all admin API calls since backend checks for lowercase "admin")
   const handleAdminLogin = async () => {
     setError("");
     setLoading(true);
@@ -144,7 +145,7 @@ export default function Login() {
             <div className="flex-grow border-t border-gray-700" />
           </div>
 
-          {/* Admin Login — now hits real backend */}
+          {/* Admin Login — hits real backend */}
           <button
             type="button"
             onClick={handleAdminLogin}
