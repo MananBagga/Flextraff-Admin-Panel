@@ -1,16 +1,37 @@
 // src/components/Sidebar.jsx
-import { BarChart3, Table, Settings, LogOut, Moon } from "lucide-react";
+import {
+  BarChart3,
+  Table,
+  Settings,
+  LogOut,
+  Moon,
+  UserPlus,
+  Users,
+  GitBranch,
+} from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import flextraff_logo from "../assets/flextraff_logo.png";
 
 export default function Sidebar({ darkMode, toggleDarkMode }) {
   const navigate = useNavigate();
+  const currentUser = JSON.parse(localStorage.getItem("user") || "{}");
+  const isAdmin = currentUser.role === "ADMIN";
 
   const handleLogout = () => {
-    // Clear Supabase / local auth (depending on how you handle it)
     localStorage.removeItem("auth");
-    navigate("/login"); // 🔹 go to /login instead of "/"
+    localStorage.removeItem("user");
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("refresh_token");
+    navigate("/", { replace: true });
   };
+
+  const linkCls = `flex items-center gap-2 p-2 rounded-lg transition-colors ${
+    darkMode
+      ? "hover:bg-gray-800 hover:text-yellow-400"
+      : "hover:bg-blue-50 hover:text-blue-700"
+  }`;
+  const iconCls = darkMode ? "text-yellow-400" : "text-blue-500";
+  const dividerCls = `my-3 border-t ${darkMode ? "border-gray-700" : "border-gray-300"}`;
 
   return (
     <aside
@@ -23,12 +44,9 @@ export default function Sidebar({ darkMode, toggleDarkMode }) {
       {/* Header */}
       <div>
         <div className="flex items-center justify-between mb-10">
-          {/* Dark mode toggle */}
           <button
             aria-label="Toggle dark mode"
-            className={`rounded-full p-2 shadow ${
-              darkMode ? "bg-gray-800" : "bg-white"
-            }`}
+            className={`rounded-full p-2 shadow ${darkMode ? "bg-gray-800" : "bg-white"}`}
             onClick={toggleDarkMode}
           >
             <Moon
@@ -37,92 +55,66 @@ export default function Sidebar({ darkMode, toggleDarkMode }) {
               fill={darkMode ? "#facc15" : "none"}
             />
           </button>
-
           <h1
-            className={`text-xl font-bold tracking-wide ${
-              darkMode ? "text-yellow-400" : "text-blue-600"
-            }`}
+            className={`text-xl font-bold tracking-wide ${darkMode ? "text-yellow-400" : "text-blue-600"}`}
           >
-            <img src={flextraff_logo} alt="flextraff logo" className="w-10 h-10 flex items-center" /> FlexTraff
+            <img
+              src={flextraff_logo}
+              alt="flextraff logo"
+              className="w-10 h-10 flex items-center"
+            />
+            FlexTraff
           </h1>
         </div>
 
         {/* Nav Links */}
         <nav className="space-y-2">
-          <Link
-            to="/dashboard"
-            className={`flex items-center gap-2 p-2 rounded-lg transition-colors ${
-              darkMode
-                ? "hover:bg-gray-800 hover:text-yellow-400"
-                : "hover:bg-blue-50 hover:text-blue-700"
-            }`}
-          >
-            <BarChart3
-              size={18}
-              className={darkMode ? "text-yellow-400" : "text-blue-500"}
-            />
+          <Link to="/dashboard" className={linkCls}>
+            <BarChart3 size={18} className={iconCls} />
             <span>Analytics</span>
           </Link>
 
-          <Link
-            to="/traffic-data"
-            className={`flex items-center gap-2 p-2 rounded-lg transition-colors ${
-              darkMode
-                ? "hover:bg-gray-800 hover:text-yellow-400"
-                : "hover:bg-blue-50 hover:text-blue-700"
-            }`}
-          >
-            <Table
-              size={18}
-              className={darkMode ? "text-yellow-400" : "text-blue-500"}
-            />
+          <Link to="/traffic-data" className={linkCls}>
+            <Table size={18} className={iconCls} />
             <span>Traffic Data</span>
           </Link>
 
-          <Link
-            to="/controls"
-            className={`flex items-center gap-2 p-2 rounded-lg transition-colors ${
-              darkMode
-                ? "hover:bg-gray-800 hover:text-yellow-400"
-                : "hover:bg-blue-50 hover:text-blue-700"
-            }`}
-          >
-            <Settings
-              size={18}
-              className={darkMode ? "text-yellow-400" : "text-blue-500"}
-            />
+          <Link to="/controls" className={linkCls}>
+            <Settings size={18} className={iconCls} />
             <span>Controls</span>
           </Link>
 
-          <Link
-            to="/logs"
-            className={`flex items-center gap-2 p-2 rounded-lg transition-colors ${
-              darkMode
-                ? "hover:bg-gray-800 hover:text-yellow-400"
-                : "hover:bg-blue-50 hover:text-blue-700"
-            }`}
-          >
-            <Table
-              size={18}
-              className={darkMode ? "text-yellow-400" : "text-blue-500"}
-            />
+          <Link to="/logs" className={linkCls}>
+            <Table size={18} className={iconCls} />
             <span>Logs</span>
           </Link>
 
-          <Link
-            to="/scanners"
-            className={`flex items-center gap-2 p-2 rounded-lg transition-colors ${
-              darkMode
-                ? "hover:bg-gray-800 hover:text-yellow-400"
-                : "hover:bg-blue-50 hover:text-blue-700"
-            }`}
-          >
-            <Settings
-              size={18}
-              className={darkMode ? "text-yellow-400" : "text-blue-500"}
-            />
+          <Link to="/scanners" className={linkCls}>
+            <Settings size={18} className={iconCls} />
             <span>Scanners</span>
           </Link>
+
+          {/* ── Admin only ── */}
+          {isAdmin && (
+            <>
+              <div className={dividerCls} />
+
+              <Link to="/junctions" className={linkCls}>
+                <GitBranch size={18} className={iconCls} />
+                <span>Junctions</span>
+              </Link>
+
+              <Link to="/users" className={linkCls}>
+                <Users size={18} className={iconCls} />
+                <span>Users</span>
+              </Link>
+
+              <Link to="/create-user" className={linkCls}>
+                <UserPlus size={18} className={iconCls} />
+                <span>Create User</span>
+              </Link>
+            </>
+          )}
         </nav>
       </div>
 
